@@ -64,7 +64,6 @@ Classe base para conteúdos educacionais.
 
 **Método abstrato:**
 ```java
-public abstract double CalcularXP();
 🌐 Endpoints da API
 👤 UserController (/user)
 🔍 Buscar usuário por ID
@@ -99,4 +98,5 @@ POST /curso
 
 🔍 Buscar curso por ID
 GET /curso/{id}
+
 
