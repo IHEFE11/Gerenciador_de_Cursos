@@ -39,9 +39,6 @@ Classe base para conteúdos educacionais.
 - `titulo`
 - `descricao`
 
-**Constante:**
-- `XP_PADRAO = 10`
-
 **Método abstrato:**
 ```java
 🌐 Endpoints da API
@@ -78,6 +75,7 @@ POST /curso
 
 🔍 Buscar curso por ID
 GET /curso/{id}
+
 
 
 
