@@ -16,26 +16,6 @@ Este projeto é uma aplicação **Spring Boot** que implementa uma API REST simp
 
 ---
 
-## 📂 Estrutura do Projeto
-DIO.springboot
-│
-├── controller
-│ ├── UserController.java
-│ └── CursoController.java
-│
-├── model
-│ ├── User.java
-│ ├── Curso.java
-│ └── Conteudo.java
-│
-├── repository
-│ ├── UserRepository.java
-│ └── CursoRepository.java
-│
-└── Application.java
-
----
-
 ## 🧩 Models (Entities)
 
 ### 👤 User
@@ -98,5 +78,6 @@ POST /curso
 
 🔍 Buscar curso por ID
 GET /curso/{id}
+
 
 
