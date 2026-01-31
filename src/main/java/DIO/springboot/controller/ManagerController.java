@@ -1,44 +1,43 @@
 package DIO.springboot.controller;
 
-import DIO.springboot.repository.UserRepository;
+import DIO.springboot.repository.ManagerRepository;
 import DIO.springboot.handler.BusinessException;
-import DIO.springboot.model.User;
+import DIO.springboot.model.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder; 
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/admin")
+public class ManagerController {
 
     @Autowired
-    private UserRepository UserR;
+    private ManagerRepository ManagerR;
 
     @Autowired
     @Lazy
     private PasswordEncoder encoder;
 
     @GetMapping()
-    public List<User> getUser(){ 
-        return UserR.findAll();
+    public List<Manager> getManager(){ 
+        return ManagerR.findAll();
     }
+
     @PostMapping
-    public User Cadastrar(@RequestBody User user){
-        if(user.getName() == null || user.getName().isEmpty()){
+    public Manager Cadastrar(@RequestBody Manager manager){
+        if(manager.getName() == null || manager.getName().isEmpty()){
             throw new BusinessException("O campo 'nome' é obrigatório!");
         }
-        if(user.getUsername() == null || user.getUsername().isEmpty()){
+        if(manager.getUsername() == null || manager.getUsername().isEmpty()){
             throw new BusinessException("O campo 'username' é obrigatório!");
         }
-        if(user.getPassword() == null || user.getPassword().isEmpty()){
+        if(manager.getPassword() == null || manager.getPassword().isEmpty()){
             throw new BusinessException("O campo 'senha' é obrigatório!");
         }
-        String passCripto = encoder.encode(user.getPassword());
-        user.setPassword(passCripto);
-        return UserR.save(user);
+        String passCripto = encoder.encode(manager.getPassword());
+        manager.setPassword(passCripto);
+        return ManagerR.save(manager);
     }
- 
 }

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import DIO.springboot.handler.BusinessException;
 import DIO.springboot.model.Curso;
 import DIO.springboot.repository.CursoRepository;
 
@@ -18,6 +20,9 @@ public class CursoController {
     private CursoRepository CursoR;
     @PostMapping
     public Curso Cadastrar(@RequestBody Curso curso){
+        if(curso.getTitulo() == null || curso.getTitulo().isEmpty()){
+            throw new BusinessException("O campo nome é obrigatório!");
+        }
         return CursoR.save(curso);
     }
     @GetMapping("/{id}")
