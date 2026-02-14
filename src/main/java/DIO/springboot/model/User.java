@@ -1,55 +1,76 @@
 package DIO.springboot.model;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Optional;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.Collection;
+import java.util.List;
 
-@Entity
-@Table(name = "tab_user")
-public class User {
+@Table(name = "users")
+@Entity(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+public class User implements UserDetails {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private int id;
-    @Column(length = 50, nullable = false)
-    private String name;
-    @Column(length = 20, nullable = false)
-    private String username;
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+    
+    private String login;
+    
     private String password;
     
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
+    private String role; // Mantemos como String simples para evitar erro de iteração
+
+    // ✅ Construtor usado no Controller (Register)
+    public User(String login, String password, String role){
+        this.login = login;
         this.password = password;
+        this.role = role;
     }
-    public int getId() {
-        return id;
+
+    // ✅ Lógica de permissões (Converte String -> GrantedAuthority)
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role.equals("ADMIN")) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
     }
-    public void setId(int id) {
-        this.id = id;
+
+    @Override
+    public String getUsername() {
+        return login;
     }
     @Override
-    public String toString() {
-        return "User [ Name=" + getName() + ", Username=" + getUsername() + ", Password=" + getPassword() + ", Id=" + getId() + "]";
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
