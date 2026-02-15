@@ -1,0 +1,30 @@
+name: Integração Contínua Java
+
+# O Robô acorda quando:
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    # O Robô vai usar uma máquina Linux (Ubuntu) virtual
+    runs-on: ubuntu-latest
+
+    steps:
+    # Passo 1: O Robô baixa seu código
+    - uses: actions/checkout@v3
+
+    # Passo 2: O Robô instala o Java 21 (igual ao seu log)
+    - name: Configurar JDK 21
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    # Passo 3: O Robô tenta construir o projeto
+    # (Se seu projeto usar Gradle, avise que mudamos o comando)
+    - name: Construir com Maven
+      run: mvn -B package --file pom.xml

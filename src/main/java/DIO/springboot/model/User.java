@@ -31,16 +31,15 @@ public class User implements UserDetails {
     
     private String password;
     
-    private String role; // Mantemos como String simples para evitar erro de iteração
+    private String role;
 
-    // ✅ Construtor usado no Controller (Register)
     public User(String login, String password, String role){
         this.login = login;
         this.password = password;
         this.role = role;
     }
 
-    // ✅ Lógica de permissões (Converte String -> GrantedAuthority)
+   
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(this.role.equals("ADMIN")) {
